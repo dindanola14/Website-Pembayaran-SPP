@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Login Siswa | Pembayaran SPP</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="template/vendors/feather/feather.css">
+  <link rel="stylesheet" href="template/vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="template/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="template/css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="template/images/school.png" />
+</head>
+
+<body>
+<?php
+require('koneksi.php');
+session_start();
+// Jika formulir dikirimkan, masukkan nilai ke dalam database
+    if (isset($_POST['nisn'])){
+        $nisn = stripslashes($_REQUEST['nisn']);
+        $nisn = mysqli_real_escape_string($con,$nisn);
+        // Memeriksa apakah pengguna ada di database atau tidak
+        $query = "SELECT * FROM siswa WHERE nisn='$nisn'";
+        $result = mysqli_query($con,$query) or die(mysql_error());
+        $rows = mysqli_num_rows($result);
+            if($rows==1){
+                $_SESSION['nisn'] = $nisn;
+                header("Location:admin/indexsiswa.php"); // Dilarikan ke indexsiswa.php
+            }else{
+                echo "<div class='form'><h2>Maaf</h2><h3>NISN salah :(</h3><br/>Coba lagi di sini <a href='loginsiswa.php'>Login</a></div>";
+            }
+    }else{
+?>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+      <div class="content-wrapper d-flex align-items-center auth px-0">
+        <div class="row w-100 mx-0">
+          <div class="col-lg-4 mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+              <div class="brand-logo">
+                <center>
+                <img src="template/images/angkasa.png" alt="logo">
+                </center>
+              </div>
+              <center>
+              <h4>Pembayaran SPP</h4>
+              <h6 class="font-weight-light">Sekolah Angkasa</h6>
+              <div class="mt-3"></div>
+            </center>
+            <form action="" method="post">
+              <form class="pt-3">
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="NISN" name="nisn">
+                </div>
+                <div class="mt-3">
+                  <input type="submit" class="btn btn-primary btn-block btn-flat" value="LOGIN">
+                </div>
+              </form>
+              <div class="mt-3">
+              <td colspan="2"><center>Apakah anda seorang Admin? Login <a href="login.php">disini</a></center></td>
+              <td colspan="2"><center>Apakah anda seorang Petugas? Login <a href="loginpetugas.php">disini</a></center></td>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="template/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="template/js/off-canvas.js"></script>
+  <script src="template/js/hoverable-collapse.js"></script>
+  <script src="template/js/template.js"></script>
+  <script src="template/js/settings.js"></script>
+  <script src="template/js/todolist.js"></script>
+  <!-- endinject -->
+<?php } ?>
+</body>
+
+</html>
